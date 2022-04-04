@@ -36,13 +36,17 @@ const getSalario = async (id) => {
 };
 
 const getInfo = async () => {
-  const id = 3;
+  try {
+    const id = 3;
 
-  const nombre = await getEmpleado(id);
-  const salario = await getSalario(id);
-  return nombre
-    ? `el empleado ${nombre} tiene un salario de ${salario}`
-    : `No existe empleado con id ${id} y no existe el salario`;
+    const nombre = await getEmpleado(id);
+    const salario = await getSalario(id);
+    return nombre
+      ? `el empleado ${nombre} tiene un salario de ${salario}`
+      : `No existe empleado con id ${id} y no existe el salario`;
+  } catch (err) {
+    throw err;
+  }
 };
 
 getInfo()
