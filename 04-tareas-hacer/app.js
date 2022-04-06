@@ -1,35 +1,46 @@
 require("colors");
-const { mostrarMenu, pausa } = require("./helpers/mensajes");
+const { inquirerMenu, pausa, leerInput } = require("./helpers/inquirer");
+const Tareas = require("./model/tareas");
 
 const main = async () => {
   let opt = "";
+  const tareas = new Tareas();
   do {
     // Imprimir el menú
-    opt = await mostrarMenu();
-
+    opt = await inquirerMenu();
+    console.log(opt);
     switch (opt) {
       case "1": // Crear tarea
-        console.log("1", 2);
+        const tarea = await leerInput("Descripción: ");
+        tareas.crearTarea(tarea);
         break;
 
       case "2": //Listar tareas
-        console.log("2", 2);
+        tareas.listadoCompleto();
         break;
 
       case "3": // listar completadas
-        console.log("3", 3);
+        tareas.listarPendientesCompletadas(true);
         break;
 
       case "4": // listar pendientes
-        console.log("4", 4);
+        tareas.listarPendientesCompletadas(false);
         break;
 
       case "5": // completado | pendiente
-        console.log("5", 5);
+        const ids = await mostrarListadoChecklist(tareas.listadoArr);
+        tareas.toggleCompletadas(ids);
         break;
 
       case "6": // Borrar
-        console.log("6", 6);
+        const id = await listadoTareasBorrar(tareas.listadoArr);
+        if (id !== "0") {
+          const ok = await confirmar("¿Está seguro?");
+          if (ok) {
+            tareas.borrarTarea(id);
+            console.log("Tarea borrada");
+          }
+        }
         break;
     }
 
