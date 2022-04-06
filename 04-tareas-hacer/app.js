@@ -1,5 +1,12 @@
 require("colors");
-const { inquirerMenu, pausa, leerInput } = require("./helpers/inquirer");
+const {
+  inquirerMenu,
+  pausa,
+  leerInput,
+  mostrarListadoChecklist,
+  listadoTareasBorrar,
+  confirmar,
+} = require("./helpers/inquirer");
 const Tareas = require("./model/tareas");
 
 const main = async () => {
@@ -8,7 +15,6 @@ const main = async () => {
   do {
     // Imprimir el menú
     opt = await inquirerMenu();
-    console.log(opt);
     switch (opt) {
       case "1": // Crear tarea
         const tarea = await leerInput("Descripción: ");
@@ -38,7 +44,6 @@ const main = async () => {
           const ok = await confirmar("¿Está seguro?");
           if (ok) {
             tareas.borrarTarea(id);
-            console.log("Tarea borrada");
           }
         }
         break;
