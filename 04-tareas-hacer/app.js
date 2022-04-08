@@ -8,10 +8,16 @@ const {
   confirmar,
 } = require("./helpers/inquirer");
 const Tareas = require("./model/tareas");
+const { guardarDB, leerDB } = require("./helpers/guardarArchivo");
 
 const main = async () => {
   let opt = "";
   const tareas = new Tareas();
+  const tareasDB = leerDB();
+
+  if (tareasDB) {
+    tareas.cargarTareasFromArray(tareasDB);
+  }
   do {
     // Imprimir el menú
     opt = await inquirerMenu();
@@ -48,7 +54,7 @@ const main = async () => {
         }
         break;
     }
-
+    guardarDB(tareas.listadoArr);
     await pausa();
   } while (opt !== "0");
 };
